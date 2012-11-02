@@ -1,0 +1,57 @@
+<tool id="paradigm_web" name="Paradigm Web" version="1.1.0">
+  <description>Paradigm</description>
+  <command interpreter="python">paradigm_web.py 
+-user $user_name
+-api $api_key
+#if str($pathway) != 'None':
+-path $pathway
+#end if
+#if str($geneExp) != 'None':
+-exp $geneExp
+#end if 
+#if str($cna) != 'None':
+-cna $cna
+#end if 
+
+#if $skip_em:
+-skip_em
+#end if
+
+#if str($null_batches) != '':
+-null_batches $null_batches
+#end if 
+
+#if str($resume) != '':
+-resume $resume
+#end if
+-o $output
+  </command>
+  <inputs>
+      <param name="user_name" type="text" size="45" label="User Name"/>
+      <param name="api_key" type="text" size="90" label="API Key"/>
+	  <param name="geneExp" type="data" label="Gene Exp Matrix" optional="true"/>
+	  <param name="cna" type="data" label="Copy Number Matrix" optional="true"/>
+	  <param name="pathway" type="data" label="Pathway File" optional="true"/>
+	  
+	  <param name="null_batches" type="integer" label="Number of null batches (blank=0)" optional="true"/>
+	  <param name="skip_em" type="boolean" label="Skip EM" checked="false"/>
+	  	  
+      <param name="resume" type="text" size="90" label="Job Resume (optional)"/>
+  </inputs>
+  <outputs>
+      <data name="output" format="genomicMatrix"/>
+  </outputs>
+  <help>
+Interface to Five3 Genomics Paradigm Web API. Register for an account and API key at 
+https://dna.five3genomics.com
+
+Pathway File : A pathway file
+
+Gene Exp Matrix : Tab delimited expression file with hugo in the first column and samples as
+subsequent columns
+
+Copy Number Matrix : Tab delimited copy-number file with hugo in the first column and
+samples as subsequent columns
+
+  </help>
+</tool>
