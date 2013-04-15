@@ -48,11 +48,12 @@ if __name__ == "__main__":
 
 		u_name = str(uuid.uuid4())
 		r = requests.post(UPLOAD_URL, 
-			data={ 'username' : args.user, 'api_key' : args.apikey, 'file' : u_name, 'format' : 'path' }, 
+			params={ 'username' : args.user, 'api_key' : args.apikey }, 
+			data={ 'file' : u_name, 'format' : 'path' },
 			files={ 'file' : (u_name, open(args.path, "rb"))  })
 		meta = json.loads(r.text)
 		if "error_message" in meta:
-			sys.stderr.write("%s\n" % (meta['error_message']))
+			sys.stderr.write("Pathway upload failed: %s\n" % (meta['error_message']))
 			sys.exit(1)
 		uploaded_names.append(u_name)
 
@@ -66,7 +67,7 @@ if __name__ == "__main__":
 				files={ 'file' : (u_name, open(args.exp, "rb") ) })
 			meta = json.loads(r.text)
 			if "error_message" in meta:
-				sys.stderr.write("%s\n" % (meta['error_message']))
+				sys.stderr.write("Expression Matrix upload failed: %s\n" % (meta['error_message']))
 				sys.exit(1)
 			uploaded_names.append(u_name)
 
@@ -74,14 +75,14 @@ if __name__ == "__main__":
 		###
 		#Upload the copy number matrix
 		###		
-		if args.exp is not None:
+		if args.cna is not None:
 			u_name = str(uuid.uuid4())
 			r = requests.post(UPLOAD_URL, 
 				data={ 'username' : args.user, 'api_key' : args.apikey, 'file' : u_name, 'format' : 'hcnv' }, 
 				files={ 'file' : (u_name, open(args.cna, "rb"))  })
 			meta = json.loads(r.text)
 			if "error_message" in meta:
-				sys.stderr.write("%s\n" % (meta['error_message']))
+				sys.stderr.write("Copy Number upload failed: %s\n" % (meta['error_message']))
 				sys.exit(1)
 			uploaded_names.append(u_name)
 		
@@ -97,9 +98,13 @@ if __name__ == "__main__":
 		r = requests.post(RUN_URL,
 			data=run_data
 		)
-		meta = json.loads(r.text)
+		try:
+			meta = json.loads(r.text)
+		except ValueError:
+			sys.stderr.write("Server Message: %s" % (r.text))
+			sys.exit(1)
 		if "error_message" in meta:
-			sys.stderr.write("%s\n" % (meta['error_message']))
+			sys.stderr.write("Run Request failed: %s\n" % (meta['error_message']))
 			sys.exit(1)
 		print meta
 		job_uuid = meta['paradigm_legacy_run']['uuid']
@@ -143,4 +148,4 @@ if __name__ == "__main__":
 				v[ sample_order[sample] ] = value
 			handle.write("%s\t%s\n" % (cur_probe.encode('ascii', 'ignore'), "\t".join( map(lambda x : "%f" % x, v) ) ))
 		handle.close()
-		
+
