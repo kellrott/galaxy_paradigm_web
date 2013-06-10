@@ -24,7 +24,8 @@ if __name__ == "__main__":
 
 	parser.add_argument("-null_batches", dest="null_batches", help="Null batches", default=None)
 	parser.add_argument("-skip_em", dest="skip_em", action="store_true", help="Skip EM", default=False)
-	parser.add_argument("-disc", dest="disc", help="Discretization", default=False)
+	parser.add_argument("-disc_low", dest="disc_low", help="Discretization", default=0.33)
+	parser.add_argument("-disc_high", dest="disc_high", help="Discretization", default=0.66)
 
 	parser.add_argument("-out", dest="out", help="Output Path", default="paradigm.out")
 	parser.add_argument("-resume", dest="resume", help="Resume watching job UUID", default=None)
@@ -92,8 +93,8 @@ if __name__ == "__main__":
 			run_data['null_batches'] = args.null_batches
 		if args.skip_em:
 			run_data['skip_em'] = 1
-		if args.disc is not None:
-			run_data['disc'] = args.disc
+		run_data['disc_0'] = args.disc_low
+		run_data['disc_1'] = args.disc_high
 		
 		r = requests.post(RUN_URL,
 			data=run_data
@@ -108,6 +109,7 @@ if __name__ == "__main__":
 			sys.exit(1)
 		print meta
 		job_uuid = meta['paradigm_legacy_run']['uuid']
+		print "Running Job:", job_uuid
 	else:
 		job_uuid = args.resume
 		
