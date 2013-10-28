@@ -1,6 +1,6 @@
 <tool id="paradigm_web" name="Paradigm Web" version="1.1.0">
   <description>Paradigm</description>
-  <command interpreter="python">paradigm_web.py 
+  <command interpreter="python">five3_paradigm_webapi.py 
 -user $user_name
 -api $api_key
 #if str($pathway) != 'None':
