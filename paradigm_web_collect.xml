@@ -1,0 +1,24 @@
+<tool id="paradigm_web_collect" name="Paradigm Web Collect" version="1.0.0">
+  <description>Paradigm Web Collect</description>
+  <command interpreter="python">five3_paradigm_webapi.py
+--user $user_name
+--api $api_key
+--resume-file $resume
+--out $output
+--out-nulls $nulls
+--out-params $params
+  </command>
+  <inputs>
+    <param name="user_name" type="text" size="45" label="User Name"/>
+    <param name="api_key" type="text" size="90" label="API Key"/>
+    <param name="resume" type="data" format="text" label="Job UUID file"/>
+  </inputs>
+  <outputs>
+      <data name="output" format="tabular"/>
+      <data name="nulls" format="tabular"/>
+      <data name="params" format="text"/>
+  </outputs>
+  <help>
+This program waits and collects submitted Paradigm jobs the Five3 server.
+  </help>
+</tool>

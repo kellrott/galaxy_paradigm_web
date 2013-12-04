@@ -1,34 +1,33 @@
-<tool id="paradigm_web" name="Paradigm Web" version="1.1.0">
-  <description>Paradigm</description>
-  <command interpreter="python">paradigm_web.py 
--user $user_name
--api $api_key
+<tool id="paradigm_web_submit" name="Paradigm Web Submit" version="1.0.0">
+  <description>Paradigm Web Submit</description>
+  <command interpreter="python">five3_paradigm_webapi.py
+--user $user_name
+--api $api_key
 #if str($pathway) != 'None':
--path $pathway
+--path $pathway
 #end if
 #if str($geneExp) != 'None':
--exp $geneExp
+--exp $geneExp
 #end if 
 #if str($cna) != 'None':
--cna $cna
+--cna $cna
 #end if 
 
 #if $skip_em:
--skip_em
+--skip-em
 #end if
 
 #if str($null_batches) != '':
--null_batches $null_batches
+--null-batches $null_batches
 #end if 
 
-#if str($resume) != '':
--resume $resume
-#end if
--o $output
+--submit-only $output
+
+
   </command>
   <inputs>
-      <param name="user_name" type="text" size="45" label="User Name"/>
-      <param name="api_key" type="text" size="90" label="API Key"/>
+    <param name="user_name" type="text" size="45" label="User Name"/>
+    <param name="api_key" type="text" size="90" label="API Key"/>
 	  <param name="geneExp" type="data" label="Gene Exp Matrix" optional="true"/>
 	  <param name="cna" type="data" label="Copy Number Matrix" optional="true"/>
 	  <param name="pathway" type="data" label="Pathway File" optional="true"/>
@@ -36,14 +35,15 @@
 	  <param name="null_batches" type="integer" label="Number of null batches (blank=0)" optional="true"/>
 	  <param name="skip_em" type="boolean" label="Skip EM" checked="false"/>
 	  	  
-      <param name="resume" type="text" size="90" label="Job Resume (optional)"/>
   </inputs>
   <outputs>
-      <data name="output" format="genomicMatrix"/>
+      <data name="output" format="text" label="Job UUID"/>
   </outputs>
   <help>
 Interface to Five3 Genomics Paradigm Web API. Register for an account and API key at 
 https://dna.five3genomics.com
+
+This is a submission program only, use 'Paradigm Web Collect' to wait for the results to complete.
 
 Pathway File : A pathway file
 
