@@ -101,7 +101,6 @@ def save_job_result(username, api_key, job_uuid, output_type, output_filename):
         if chunk: # filter out keep-alive new chunks
             fout.write(chunk)
             fout.flush()
-    fout.write(r.text)
     fout.close()
 
 
