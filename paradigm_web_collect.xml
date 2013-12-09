@@ -14,9 +14,9 @@
     <param name="resume" type="data" format="text" label="Job UUID file"/>
   </inputs>
   <outputs>
-      <data name="output" format="tabular"/>
-      <data name="nulls" format="tabular"/>
-      <data name="params" format="text"/>
+      <data name="output" format="tabular" label="IPL Matrix"/>
+      <data name="nulls" format="tabular" label="Null IPL Matrix"/>
+      <data name="params" format="text" label="Learned Params"/>
   </outputs>
   <help>
 This program waits and collects submitted Paradigm jobs the Five3 server.
